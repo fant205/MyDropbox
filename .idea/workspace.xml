@@ -5,8 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fc5d6ac-5fc0-457c-a66c-a49c6ca89bda" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/FilesController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/Network.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-app/src/main/resources/ru/alexey/mydropbox/cloud/app/hello-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-server/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-server/src/main/java/ru/alexey/mydropbox/cloud/server/FilesHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-server/src/main/java/ru/alexey/mydropbox/cloud/server/FilesServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server_files/1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server_files/test.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cloud-app/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloudapp/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/FilesApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloudapp/HelloController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/resources/ru/alexey/mydropbox/cloudapp/hello-view.fxml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -30,13 +45,38 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "jdk.selected.JAVA_MODULE": "openjdk-17",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "jdk.selected.JAVA_MODULE": "openjdk-18 (2)",
+    "last_opened_file_path": "/home/alexey/GitRepositories/MyDropbox",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/cloud-app/src/main/resources/ru/alexey/mydropbox/cloud/app" />
+      <recent name="$PROJECT_DIR$/cloud-app/src/main/java" />
+      <recent name="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app" />
+      <recent name="$PROJECT_DIR$/cloud-server/src/main/java" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.FilesApplication">
+    <configuration name="FilesApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ru.alexey.mydropbox.cloud.app.FilesApplication" />
+      <module name="cloud-app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.alexey.mydropbox.cloud.app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ru.alexey.mydropbox.cloudapp.HelloApplication" />
       <module name="cloud-app" />
@@ -50,8 +90,23 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ru.alexey.mydropbox.cloud.server.FilesServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ru.alexey.mydropbox.cloud.server.FilesServer" />
+      <module name="cloud-server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.alexey.mydropbox.cloud.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.FilesApplication" />
+        <item itemvalue="Application.ru.alexey.mydropbox.cloud.server.FilesServer" />
         <item itemvalue="Application.HelloApplication" />
       </list>
     </recent_temporary>
