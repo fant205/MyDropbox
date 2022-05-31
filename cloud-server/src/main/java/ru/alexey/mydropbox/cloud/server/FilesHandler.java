@@ -55,10 +55,28 @@ public class FilesHandler implements Runnable {
                         e.printStackTrace();
                     }
                     sendListOfFiles(serverDir);
+                } else if (command.equals("#download#")) {
+                    sendFileFromServer();
                 }
             }
         } catch (Exception e) {
             System.err.println("Connection was broken");
         }
+    }
+
+    private void sendFileFromServer() throws IOException {
+        byte[] buf = new byte[256];
+        os.writeUTF("#download#");
+        String fileName = is.readUTF();
+        os.writeUTF(fileName);
+        File toSend = Path.of(serverDir).resolve(fileName).toFile();
+        os.writeLong(toSend.length());
+        try (FileInputStream fis = new FileInputStream(toSend)) {
+            while (fis.available() > 0) {
+                int read = fis.read(buf);
+                os.write(buf, 0, read);
+            }
+        }
+        os.flush();
     }
 }

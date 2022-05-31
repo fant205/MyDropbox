@@ -1,6 +1,7 @@
 package ru.alexey.mydropbox.cloud.app;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,12 +9,14 @@ import javafx.scene.control.ListView;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 public class FilesController implements Initializable {
 
@@ -37,6 +40,7 @@ public class FilesController implements Initializable {
         try {
             while (true) {
                 String command = network.readString();
+                System.out.println("client received: " + command);
                 if (command.equals("#list#")) {
                     Platform.runLater(() -> serverView.getItems().clear());
                     int len = network.readInt();
@@ -44,11 +48,32 @@ public class FilesController implements Initializable {
                         String file = network.readString();
                         Platform.runLater(() -> serverView.getItems().add(file));
                     }
+                } else if (command.equals("#download#")) {
+                    processingDownloadCommand();
                 }
             }
         } catch (Exception e) {
             System.err.println("Connection lost");
+            e.printStackTrace();
         }
+    }
+
+    private void processingDownloadCommand() throws IOException {
+        String fileName = network.getIs().readUTF();
+        long len = network.getIs().readLong();
+        File file = Path.of(homeDir).resolve(fileName).toFile();
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            for (int i = 0; i < (len + 255) / 256; i++) {
+                int read = network.getIs().read(buf);
+                fos.write(buf, 0, read);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        clientView.getItems().clear();
+        List<String> files = getFiles(homeDir);
+        ObservableList<String> items = clientView.getItems();
+        items.addAll(files);
     }
 
     // post init fx fields
@@ -71,7 +96,7 @@ public class FilesController implements Initializable {
     private List<String> getFiles(String dir) {
         String[] list = new File(dir).list();
         assert list != null;
-        return Arrays.asList(list);
+        return Arrays.asList(list).stream().sorted().toList();
     }
 
     public void upload(ActionEvent actionEvent) throws IOException {
@@ -89,7 +114,10 @@ public class FilesController implements Initializable {
         network.getOs().flush();
     }
 
-    public void download(ActionEvent actionEvent) {
-
+    public void download(ActionEvent actionEvent) throws IOException {
+        network.getOs().writeUTF("#download#");
+        String file = serverView.getSelectionModel().getSelectedItem();
+        network.getOs().writeUTF(file);
+        network.getOs().flush();
     }
 }
