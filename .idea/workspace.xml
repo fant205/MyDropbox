@@ -5,24 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fc5d6ac-5fc0-457c-a66c-a49c6ca89bda" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/FilesController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/Network.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-app/src/main/resources/ru/alexey/mydropbox/cloud/app/hello-view.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-server/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-server/src/main/java/ru/alexey/mydropbox/cloud/server/FilesHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-server/src/main/java/ru/alexey/mydropbox/cloud/server/FilesServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server_files/1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server_files/test.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cloud-app/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloudapp/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/FilesApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloudapp/HelloController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/resources/ru/alexey/mydropbox/cloudapp/hello-view.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,19 +25,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "jdk.selected.JAVA_MODULE": "openjdk-18 (2)",
-    "last_opened_file_path": "/home/alexey/GitRepositories/MyDropbox",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-18 (2)&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/alexey/GitRepositories/MyDropbox&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
