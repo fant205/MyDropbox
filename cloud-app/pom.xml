@@ -60,7 +60,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>ru.alexey.mydropbox.cloudapp/ru.alexey.mydropbox.cloudapp.HelloApplication
+                            <mainClass>ru.alexey.mydropbox.cloudapp/ru.alexey.mydropbox.cloud.app.HelloApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
