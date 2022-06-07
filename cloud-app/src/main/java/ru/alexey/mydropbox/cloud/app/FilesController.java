@@ -1,87 +1,81 @@
 package ru.alexey.mydropbox.cloud.app;
 
+
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import ru.alexey.mydropbox.cloud.model.*;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 public class FilesController implements Initializable {
-
+    private Image IMAGE_FOLDER;
+    private Image IMAGE_FILE;
 
     private String homeDir;
-
-    private byte[] buf;
 
     @FXML
     public ListView<String> clientView;
 
     @FXML
+
     public ListView<String> serverView;
 
     private Network network;
-
-
-
+    private Map<String, Integer> serverFiles;
 
     private void readLoop() {
         try {
             while (true) {
-                String command = network.readString();
-                System.out.println("client received: " + command);
-                if (command.equals("#list#")) {
-                    Platform.runLater(() -> serverView.getItems().clear());
-                    int len = network.readInt();
-                    for (int i = 0; i < len; i++) {
-                        String file = network.readString();
-                        Platform.runLater(() -> serverView.getItems().add(file));
-                    }
-                } else if (command.equals("#download#")) {
-                    processingDownloadCommand();
+                CloudMessage message = network.read();
+                if (message instanceof ListFiles listFiles) {
+                    Platform.runLater(() -> {
+                        initServerView();
+                        serverView.getItems().clear();
+                        serverFiles = listFiles.getFiles();
+                        serverView.getItems().addAll(convert(serverFiles));
+                    });
+                } else if (message instanceof FileMessage fileMessage) {
+                    Path current = Path.of(homeDir).resolve(fileMessage.getName());
+                    Files.write(current, fileMessage.getData());
+                    Platform.runLater(() -> {
+                        clientView.getItems().clear();
+                        clientView.getItems().addAll(getFiles(homeDir));
+                    });
                 }
             }
         } catch (Exception e) {
             System.err.println("Connection lost");
-            e.printStackTrace();
         }
     }
 
-    private void processingDownloadCommand() throws IOException {
-        String fileName = network.getIs().readUTF();
-        long len = network.getIs().readLong();
-        File file = Path.of(homeDir).resolve(fileName).toFile();
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            for (int i = 0; i < (len + 255) / 256; i++) {
-                int read = network.getIs().read(buf);
-                fos.write(buf, 0, read);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        clientView.getItems().clear();
-        List<String> files = getFiles(homeDir);
-        ObservableList<String> items = clientView.getItems();
-        items.addAll(files);
+    private List<String> convert(Map<String, Integer> files) {
+        return files.keySet().stream().sorted().toList();
     }
 
     // post init fx fields
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            buf = new byte[256];
-            homeDir = System.getProperty("user.home");
+            homeDir = "client_files";
+            IMAGE_FILE = new Image(Paths.get("images/file.png").toUri().toString());
+            IMAGE_FOLDER = new Image(Paths.get("images/folder.png").toUri().toString());
+            initClientView();
             clientView.getItems().clear();
             clientView.getItems().addAll(getFiles(homeDir));
             network = new Network(8189);
@@ -90,34 +84,116 @@ public class FilesController implements Initializable {
             readThread.start();
         } catch (Exception e) {
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
     private List<String> getFiles(String dir) {
         String[] list = new File(dir).list();
         assert list != null;
-        return Arrays.asList(list).stream().sorted().toList();
+        return Arrays.asList(list);
     }
 
     public void upload(ActionEvent actionEvent) throws IOException {
-        network.getOs().writeUTF("#file#");
         String file = clientView.getSelectionModel().getSelectedItem();
-        network.getOs().writeUTF(file);
-        File toSend = Path.of(homeDir).resolve(file).toFile();
-        network.getOs().writeLong(toSend.length());
-        try (FileInputStream fis = new FileInputStream(toSend)) {
-            while (fis.available() > 0) {
-                int read = fis.read(buf);
-                network.getOs().write(buf, 0, read);
-            }
-        }
-        network.getOs().flush();
+        network.write(new FileMessage(Path.of(homeDir).resolve(file)));
     }
 
     public void download(ActionEvent actionEvent) throws IOException {
-        network.getOs().writeUTF("#download#");
+
         String file = serverView.getSelectionModel().getSelectedItem();
-        network.getOs().writeUTF(file);
-        network.getOs().flush();
+        network.write(new FileRequest(file));
     }
+
+    public void onMouseClicked(MouseEvent click) throws IOException {
+
+        if (click.getClickCount() == 2) {
+            String selectedItem = clientView.getSelectionModel().getSelectedItem();
+            Path folder = Path.of(homeDir).resolve(selectedItem);
+            if (!Files.isDirectory(folder)) {
+                return;
+            }
+
+            //go into folder
+            clientView.getItems().clear();
+            homeDir = folder.toAbsolutePath().toString();
+            clientView.getItems().addAll(getFiles(homeDir));
+
+        }
+    }
+
+
+    public void parent(ActionEvent actionEvent) {
+        homeDir = Paths.get(homeDir).getParent().toAbsolutePath().toString();
+        clientView.getItems().clear();
+        clientView.getItems().addAll(getFiles(homeDir));
+
+    }
+
+    public void initClientView() {
+        clientView.setCellFactory(param -> new ListCell<String>() {
+            private ImageView imageView = new ImageView();
+
+            @Override
+            public void updateItem(String name, boolean empty) {
+                super.updateItem(name, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    Path resolve = Paths.get(homeDir).resolve(name);
+                    if (Files.isDirectory(resolve)) {
+                        imageView.setImage(IMAGE_FOLDER);
+                    } else {
+                        imageView.setImage(IMAGE_FILE);
+                    }
+                    setText(name);
+                    setGraphic(imageView);
+                }
+            }
+        });
+
+
+    }
+
+    public void initServerView() {
+        serverView.setCellFactory(param -> new ListCell<String>() {
+            private ImageView imageView = new ImageView();
+
+            @Override
+            public void updateItem(String name, boolean empty) {
+                super.updateItem(name, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    if (serverFiles.get(name).equals(1)) {
+                        imageView.setImage(IMAGE_FOLDER);
+                    } else {
+                        imageView.setImage(IMAGE_FILE);
+                    }
+                    setText(name);
+                    setGraphic(imageView);
+                }
+            }
+        });
+
+
+    }
+
+    public void onMouseClickedOnServer(MouseEvent click) throws IOException {
+        if (click.getClickCount() == 2) {
+            String file = serverView.getSelectionModel().getSelectedItem();
+            network.write(new PathInRequest(file));
+        }
+    }
+
+
+    public void toParentOnServer(ActionEvent click) throws IOException {
+        network.write(new PathUpRequest());
+    }
+
+//    public List<String> getFilesNames(List<FileSystemObject> fileSystemObjects) {
+//        return fileSystemObjects.stream().map(p -> p.getName()).collect(Collectors.toList());
+//    }
 }
