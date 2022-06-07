@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.alexey.mydropbox.cloud.app.FilesController">
+   <HBox prefHeight="31.0" prefWidth="452.0">
+      <Button mnemonicParsing="false" onAction="#parent" prefHeight="33.0" prefWidth="150.0" text="To parent on Client" />
+      <Pane maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="31.0" prefWidth="702.0" />
+      <Button mnemonicParsing="false" onAction="#toParentOnServer" prefHeight="33.0" prefWidth="150.0" text="To parent on Server" />
+   </HBox>
+   <HBox>
+      <ListView fx:id="clientView" onMouseClicked="#onMouseClicked" prefHeight="500.0" prefWidth="500.0" />
+      <ListView fx:id="serverView" onMouseClicked="#onMouseClickedOnServer" prefHeight="500.0" prefWidth="500.0" />
+   </HBox>
+   <HBox prefHeight="31.0" prefWidth="452.0">
+      <Button mnemonicParsing="false" onAction="#upload" prefHeight="33.0" prefWidth="150.0" text="To server" />
+      <Pane prefHeight="31.0" prefWidth="700.0" />
+      <Button mnemonicParsing="false" onAction="#download" prefHeight="46.0" prefWidth="150.0" text="From server" />
+   </HBox>
+</VBox>
