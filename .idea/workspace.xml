@@ -5,33 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fc5d6ac-5fc0-457c-a66c-a49c6ca89bda" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client_files/2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client_files/folder1/33.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client_files/folder1/44.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-app/src/main/resources/log4j.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-model/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-model/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-model/src/main/java/ru/alexey/mydropbox/cloud/model/CloudMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-model/src/main/java/ru/alexey/mydropbox/cloud/model/FileMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-model/src/main/java/ru/alexey/mydropbox/cloud/model/FileRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-model/src/main/java/ru/alexey/mydropbox/cloud/model/ListFiles.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-model/src/main/java/ru/alexey/mydropbox/cloud/model/PathInRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-model/src/main/java/ru/alexey/mydropbox/cloud/model/PathUpRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-server/src/main/java/netty/CloudServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-server/src/main/java/netty/handler/CloudFileHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cloud-server/src/main/resources/log4j.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server_files/test_folder/3.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cloud-app/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/FilesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/FilesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/Network.java" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/Network.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/resources/ru/alexey/mydropbox/cloud/app/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/src/main/resources/ru/alexey/mydropbox/cloud/app/hello-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cloud-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-server/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
