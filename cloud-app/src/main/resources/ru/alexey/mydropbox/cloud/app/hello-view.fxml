@@ -3,19 +3,34 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.alexey.mydropbox.cloud.app.FilesController">
-   <HBox prefHeight="31.0" prefWidth="452.0">
-      <Button mnemonicParsing="false" onAction="#parent" prefHeight="33.0" prefWidth="150.0" text="To parent on Client" />
-      <Pane maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="31.0" prefWidth="702.0" />
-      <Button mnemonicParsing="false" onAction="#toParentOnServer" prefHeight="33.0" prefWidth="150.0" text="To parent on Server" />
-   </HBox>
-   <HBox>
-      <ListView fx:id="clientView" onMouseClicked="#onMouseClicked" prefHeight="500.0" prefWidth="500.0" />
-      <ListView fx:id="serverView" onMouseClicked="#onMouseClickedOnServer" prefHeight="500.0" prefWidth="500.0" />
-   </HBox>
-   <HBox prefHeight="31.0" prefWidth="452.0">
-      <Button mnemonicParsing="false" onAction="#upload" prefHeight="33.0" prefWidth="150.0" text="To server" />
-      <Pane prefHeight="31.0" prefWidth="700.0" />
-      <Button mnemonicParsing="false" onAction="#download" prefHeight="46.0" prefWidth="150.0" text="From server" />
-   </HBox>
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ru.alexey.mydropbox.cloud.app.FilesController">
+
+    <HBox prefHeight="31.0" prefWidth="452.0">
+        <Button fx:id="clientBack" disable="true" mnemonicParsing="false" onAction="#parent" prefHeight="31.0" prefWidth="60.0"
+                text="Назад"/>
+        <Button fx:id="clientRename" disable="true" mnemonicParsing="false" onAction="#renameOnClient" prefHeight="31.0" prefWidth="132.0"
+                text="Переименовать"/>
+        <Button fx:id="clientDelete" disable="true" mnemonicParsing="false" onAction="#deleteOnClient" prefHeight="31.0" prefWidth="84.0"
+                text="Удалить"/>
+        <Pane maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="31.0" prefWidth="73.0"/>
+        <Button fx:id="auth" mnemonicParsing="false" onAction="#authorize" prefHeight="31.0" prefWidth="151.0" text="Авторизация"/>
+        <Button fx:id="register" mnemonicParsing="false" onAction="#register" prefHeight="31.0" prefWidth="142.0" text="Регистрация"/>
+        <Pane maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="31.0" prefWidth="82.0"/>
+        <Button fx:id="serverBack" disable="true" mnemonicParsing="false" onAction="#toParentOnServer" prefHeight="33.0" prefWidth="60.0"
+                text="Назад"/>
+        <Button fx:id="serverRename" disable="true" mnemonicParsing="false" onAction="#renameOnServer" prefHeight="31.0" prefWidth="132.0"
+                text="Переименовать"/>
+        <Button fx:id="serverDelete" disable="true" mnemonicParsing="false" onAction="#deleteOnServer" prefHeight="31.0" prefWidth="84.0"
+                text="Удалить"/>
+    </HBox>
+    <HBox>
+        <ListView fx:id="clientView" onMouseClicked="#onMouseClicked" prefHeight="500.0" prefWidth="500.0"/>
+        <ListView fx:id="serverView" onMouseClicked="#onMouseClickedOnServer" prefHeight="500.0" prefWidth="500.0"/>
+    </HBox>
+    <HBox prefHeight="31.0" prefWidth="452.0">
+        <Button fx:id="upload" disable="true" mnemonicParsing="false" onAction="#upload" prefHeight="33.0" prefWidth="150.0" text="Загрузить"/>
+        <Pane prefHeight="31.0" prefWidth="700.0"/>
+        <Button fx:id="download" disable="true" mnemonicParsing="false" onAction="#download" prefHeight="46.0" prefWidth="150.0" text="Скачать"/>
+    </HBox>
 </VBox>

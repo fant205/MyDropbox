@@ -5,7 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fc5d6ac-5fc0-457c-a66c-a49c6ca89bda" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/Utils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-model/src/main/java/ru/alexey/mydropbox/cloud/model/AuthMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-model/src/main/java/ru/alexey/mydropbox/cloud/model/DeleteRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-model/src/main/java/ru/alexey/mydropbox/cloud/model/ErrorAuthorization.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-model/src/main/java/ru/alexey/mydropbox/cloud/model/RenameRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-model/src/main/java/ru/alexey/mydropbox/cloud/model/SuccessAuthorization.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-server/src/main/java/netty/service/AuthService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-server/src/main/java/netty/service/DataBaseAuthServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloud-server/src/main/java/netty/service/UserData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_files/1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_files/2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_files/folder1/2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_files/folder1/33.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_files/folder1/44.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cloud-app/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/FilesApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/FilesApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/FilesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/FilesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cloud-app/src/main/resources/ru/alexey/mydropbox/cloud/app/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-app/src/main/resources/ru/alexey/mydropbox/cloud/app/hello-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cloud-server/src/main/java/netty/handler/CloudFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-server/src/main/java/netty/handler/CloudFileHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server_files/1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server_files/2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server_files/44.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server_files/test_folder/1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server_files/test_folder/2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server_files/test_folder/3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server_files/test_folder/44.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +64,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "jdk.selected.JAVA_MODULE": "openjdk-18 (2)",
-    "last_opened_file_path": "/home/alexey/JavaProjects/LearningProject",
+    "last_opened_file_path": "/home/alexey/GitRepositories/MyDropbox/cloud-server/src/main/java/netty/service",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -46,11 +73,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/cloud-server/src/main/java/netty/service" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/cloud-server/src/main/resources" />
       <recent name="$PROJECT_DIR$/cloud-app/src/main/resources" />
       <recent name="$PROJECT_DIR$/cloud-app/src/main/java" />
-      <recent name="$PROJECT_DIR$/cloud-model/src/main/java" />
     </key>
   </component>
   <component name="RunManager" selected="Application.FilesApplication">
@@ -150,5 +177,21 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/cloud-app/src/main/java/ru/alexey/mydropbox/cloud/app/FilesController.java</url>
+          <line>324</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/cloud-model/src/main/java/ru/alexey/mydropbox/cloud/model/DeleteRequest.java</url>
+          <line>14</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -15,6 +15,7 @@ public class FilesApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Chat");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

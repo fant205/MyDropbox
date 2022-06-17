@@ -5,11 +5,15 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.util.Pair;
 import ru.alexey.mydropbox.cloud.model.*;
 
 import java.io.File;
@@ -18,10 +22,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class FilesController implements Initializable {
     private Image IMAGE_FOLDER;
@@ -33,11 +34,33 @@ public class FilesController implements Initializable {
     public ListView<String> clientView;
 
     @FXML
-
     public ListView<String> serverView;
+
+    @FXML
+    public Button clientBack;
+    @FXML
+    public Button clientRename;
+    @FXML
+    public Button clientDelete;
+    @FXML
+    public Button auth;
+    @FXML
+    public Button register;
+    @FXML
+    public Button serverBack;
+    @FXML
+    public Button serverRename;
+    @FXML
+    public Button serverDelete;
+
+    @FXML
+    public Button upload;
+    @FXML
+    public Button download;
 
     private Network network;
     private Map<String, Integer> serverFiles;
+
 
     private void readLoop() {
         try {
@@ -57,6 +80,20 @@ public class FilesController implements Initializable {
                         clientView.getItems().clear();
                         clientView.getItems().addAll(getFiles(homeDir));
                     });
+                } else if (message instanceof SuccessAuthorization successAuthorization) {
+                    clientBack.setDisable(false);
+                    clientRename.setDisable(false);
+                    clientDelete.setDisable(false);
+                    auth.setDisable(true);
+                    register.setDisable(true);
+                    serverBack.setDisable(false);
+                    serverRename.setDisable(false);
+                    serverDelete.setDisable(false);
+                    upload.setDisable(false);
+                    download.setDisable(false);
+
+                } else if (message instanceof ErrorAuthorization errorAuthorization) {
+                    Utils.error("Ошибка авторизации!", errorAuthorization.getMsg());
                 }
             }
         } catch (Exception e) {
@@ -91,7 +128,7 @@ public class FilesController implements Initializable {
     private List<String> getFiles(String dir) {
         String[] list = new File(dir).list();
         assert list != null;
-        return Arrays.asList(list);
+        return Arrays.asList(list).stream().sorted().toList();
     }
 
     public void upload(ActionEvent actionEvent) throws IOException {
@@ -193,7 +230,176 @@ public class FilesController implements Initializable {
         network.write(new PathUpRequest());
     }
 
-//    public List<String> getFilesNames(List<FileSystemObject> fileSystemObjects) {
-//        return fileSystemObjects.stream().map(p -> p.getName()).collect(Collectors.toList());
-//    }
+    public void renameOnClient(ActionEvent actionEvent) throws IOException {
+        String file = clientView.getSelectionModel().getSelectedItem();
+        if (file == null || file.isEmpty()) {
+            Utils.error("Ошибка!", "Выберите файл для переименования!");
+            return;
+        }
+
+        TextInputDialog dialog = new TextInputDialog(file);
+        dialog.setTitle("Переименование файла");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Введите новое имя");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(name -> {
+            Path source = Path.of(homeDir).resolve(file);
+            try {
+                Files.move(source, Path.of(homeDir).resolve(name));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            clientView.getItems().clear();
+            clientView.getItems().addAll(getFiles(homeDir));
+        });
+
+    }
+
+    public void deleteOnClient(ActionEvent actionEvent) throws IOException {
+
+        String file = clientView.getSelectionModel().getSelectedItem();
+        if (file == null || file.isEmpty()) {
+            Utils.error("Ошибка!", "Выберите файл для удаления!");
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Подтверджение");
+        alert.setHeaderText(file);
+        alert.setContentText("Вы действительно хотите удалить файл?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            // ... user chose OK
+            try {
+                Path pathToBeDeleted = Path.of(homeDir).resolve(file);
+                if (Files.isDirectory(pathToBeDeleted)) {
+                    Files.walk(pathToBeDeleted)
+                            .sorted(Comparator.reverseOrder())
+                            .map(Path::toFile)
+                            .forEach(File::delete);
+
+                } else {
+                    Files.delete(pathToBeDeleted);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            clientView.getItems().clear();
+            clientView.getItems().addAll(getFiles(homeDir));
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
+
+    }
+
+    public void renameOnServer(ActionEvent actionEvent) {
+
+        String oldName = serverView.getSelectionModel().getSelectedItem();
+        if (oldName == null || oldName.isEmpty()) {
+            Utils.error("Ошибка!", "Выберите на сервере файл для переименования!");
+            return;
+        }
+
+        TextInputDialog dialog = new TextInputDialog(oldName);
+        dialog.setTitle("Переименование файла");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Введите новое имя");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(newName -> {
+            try {
+                network.write(new RenameRequest(oldName, newName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+
+    }
+
+    public void deleteOnServer(ActionEvent actionEvent) {
+
+        String file = serverView.getSelectionModel().getSelectedItem();
+        if (file == null || file.isEmpty()) {
+            Utils.error("Ошибка!", "Выберите на сервере файл для удаления!");
+            return;
+        }
+
+        try {
+            network.write(new DeleteRequest(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void register(ActionEvent actionEvent) {
+
+    }
+
+    public void authorize(ActionEvent actionEvent) {
+        // Create the custom dialog.
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Авторизация");
+        dialog.setHeaderText("Введите Ваш логин и пароль");
+
+        // Set the icon (must be included in the project).
+//        dialog.setGraphic(new ImageView(this.getClass().getResource("login.png").toString()));
+
+        // Set the button types.
+        ButtonType loginButtonType = new ButtonType("Логин", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        // Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField username = new TextField();
+        username.setPromptText("Логин");
+        PasswordField password = new PasswordField();
+        password.setPromptText("Пароль");
+
+        grid.add(new Label("Логин:"), 0, 0);
+        grid.add(username, 1, 0);
+        grid.add(new Label("Пароль:"), 0, 1);
+        grid.add(password, 1, 1);
+
+        // Enable/Disable login button depending on whether a username was entered.
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+
+        // Do some validation (using the Java 8 lambda syntax).
+        username.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+        // Request focus on the username field by default.
+        Platform.runLater(() -> username.requestFocus());
+
+        // Convert the result to a username-password-pair when the login button is clicked.
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new Pair<>(username.getText(), password.getText());
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+
+        result.ifPresent(usernamePassword -> {
+//            System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
+            try {
+                network.write(new AuthMessage(usernamePassword.getKey(), usernamePassword.getValue()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 }
