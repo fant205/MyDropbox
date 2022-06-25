@@ -3,11 +3,11 @@ package ru.alexey.mydropbox.cloud.model;
 import lombok.Data;
 
 @Data
-public class ErrorAuthorization implements CloudMessage {
+public class ErrorMessage implements CloudMessage {
 
     private String msg;
 
-    public ErrorAuthorization(String msg) {
+    public ErrorMessage(String msg) {
         this.msg = msg;
     }
 }

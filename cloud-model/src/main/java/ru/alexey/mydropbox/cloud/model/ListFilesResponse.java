@@ -12,12 +12,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
-public class ListFiles implements CloudMessage {
+public class ListFilesResponse implements CloudMessage {
 
     //    private final List<FileSystemObject> fileSystemObjects = new ArrayList<>();
     private final Map<String, Integer> files;
 
-    public ListFiles(Path path) throws IOException {
+    public ListFilesResponse(Path path) throws IOException {
         List<String> list = Files.list(path)
                 .map(p -> p.getFileName().toString())
                 .collect(Collectors.toList());
@@ -34,15 +34,9 @@ public class ListFiles implements CloudMessage {
             }
         }
 
-//        Iterator<String> iterator = files.iterator();
-//        while (iterator.hasNext()){
-//            String next = iterator.next();
-//            Path p = Paths.get(next);
-//            if(Files.isDirectory(p)){
-//                fileSystemObjects.add(new Folder(p.toString()));
-//            } else {
-//                fileSystemObjects.add(new File(p.toString()));
-//            }
-//        }
+    }
+
+    public ListFilesResponse(Map<String, Integer> files){
+        this.files = files;
     }
 }

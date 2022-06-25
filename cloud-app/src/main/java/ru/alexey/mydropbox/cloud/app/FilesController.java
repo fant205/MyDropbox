@@ -12,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.util.Pair;
 import ru.alexey.mydropbox.cloud.model.*;
 
@@ -43,9 +42,9 @@ public class FilesController implements Initializable {
     @FXML
     public Button clientDelete;
     @FXML
-    public Button auth;
+    public Button authButt;
     @FXML
-    public Button register;
+    public Button registerButt;
     @FXML
     public Button serverBack;
     @FXML
@@ -58,15 +57,30 @@ public class FilesController implements Initializable {
     @FXML
     public Button download;
 
+    @FXML
+    public Label nicknameLabel;
+
+    @FXML
+    public Button share;
+
+    @FXML
+    public Button showMyFiles;
+
+    @FXML
+    public Button showShare;
+
     private Network network;
     private Map<String, Integer> serverFiles;
+    private String shareFile;
+    private String nickname;
+    private boolean showingShareFiles;
 
 
     private void readLoop() {
         try {
             while (true) {
                 CloudMessage message = network.read();
-                if (message instanceof ListFiles listFiles) {
+                if (message instanceof ListFilesResponse listFiles) {
                     Platform.runLater(() -> {
                         initServerView();
                         serverView.getItems().clear();
@@ -84,21 +98,62 @@ public class FilesController implements Initializable {
                     clientBack.setDisable(false);
                     clientRename.setDisable(false);
                     clientDelete.setDisable(false);
-                    auth.setDisable(true);
-                    register.setDisable(true);
+                    authButt.setDisable(true);
+                    registerButt.setDisable(true);
                     serverBack.setDisable(false);
                     serverRename.setDisable(false);
                     serverDelete.setDisable(false);
                     upload.setDisable(false);
                     download.setDisable(false);
+                    share.setDisable(false);
+                    showMyFiles.setDisable(false);
+                    showShare.setDisable(false);
 
-                } else if (message instanceof ErrorAuthorization errorAuthorization) {
-                    Utils.error("Ошибка авторизации!", errorAuthorization.getMsg());
+
+                    Platform.runLater(() -> {
+                        nickname = successAuthorization.getNickname();
+                        nicknameLabel.setText(successAuthorization.getNickname());
+                        clientView.getItems().clear();
+                        clientView.getItems().addAll(getFiles(homeDir));
+                        Utils.info(" Авторизация", "Вы успешно авторизованы!", "Добро пожаловать, " + successAuthorization.getNickname() + "!");
+                    });
+                } else if (message instanceof SuccessRegistration successAuthorization) {
+
+                    Platform.runLater(() -> {
+                        Utils.info("Регистрация", "Вы успешно зарегестрированы!", "Теперь можно авторизоваться!");
+                    });
+                } else if (message instanceof UsersResponseMessage usersResponseMessage) {
+                    Platform.runLater(() -> {
+                        showUserSelectionDialog(usersResponseMessage);
+                    });
+                } else if (message instanceof ErrorMessage errorMessage) {
+                    Platform.runLater(() -> {
+                        Utils.error("Ошибка!", errorMessage.getMsg());
+                    });
                 }
             }
         } catch (Exception e) {
-            System.err.println("Connection lost");
+            e.printStackTrace();
         }
+    }
+
+    private void showUserSelectionDialog(UsersResponseMessage usersResponseMessage) {
+        List<String> users = usersResponseMessage.getUsers();
+        users.remove(nickname);
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("", users);
+        dialog.setTitle("Пользователи");
+        dialog.setHeaderText("Публикация файла");
+        dialog.setContentText("Выберите пользователя:");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(targetUser -> {
+            try {
+                network.write(new ShareFileMessage(shareFile, nickname, targetUser));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private List<String> convert(Map<String, Integer> files) {
@@ -113,8 +168,8 @@ public class FilesController implements Initializable {
             IMAGE_FILE = new Image(Paths.get("images/file.png").toUri().toString());
             IMAGE_FOLDER = new Image(Paths.get("images/folder.png").toUri().toString());
             initClientView();
-            clientView.getItems().clear();
-            clientView.getItems().addAll(getFiles(homeDir));
+//            clientView.getItems().clear();
+//            clientView.getItems().addAll(getFiles(homeDir));
             network = new Network(8189);
             Thread readThread = new Thread(this::readLoop);
             readThread.setDaemon(true);
@@ -137,9 +192,15 @@ public class FilesController implements Initializable {
     }
 
     public void download(ActionEvent actionEvent) throws IOException {
+        if (showingShareFiles) {
+            String file = serverView.getSelectionModel().getSelectedItem();
+            network.write(new FileOnShareRequest(file));
+        } else {
+            String file = serverView.getSelectionModel().getSelectedItem();
+            network.write(new FileRequest(file));
+        }
 
-        String file = serverView.getSelectionModel().getSelectedItem();
-        network.write(new FileRequest(file));
+
     }
 
     public void onMouseClicked(MouseEvent click) throws IOException {
@@ -161,9 +222,18 @@ public class FilesController implements Initializable {
 
 
     public void parent(ActionEvent actionEvent) {
+
+
+
         homeDir = Paths.get(homeDir).getParent().toAbsolutePath().toString();
         clientView.getItems().clear();
         clientView.getItems().addAll(getFiles(homeDir));
+
+    }
+
+    public static void main(String[] args) {
+        Path of = Path.of("client_file/test");
+        System.out.println(of.getParent().toString());
 
     }
 
@@ -338,6 +408,71 @@ public class FilesController implements Initializable {
 
     public void register(ActionEvent actionEvent) {
 
+        // Create the custom dialog.
+        Dialog<Map<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Регистрация");
+        dialog.setHeaderText("Введите Ваш логин, пароль и ник");
+
+        // Set the button types.
+        ButtonType loginButtonType = new ButtonType("Логин", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        // Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField username = new TextField();
+        username.setPromptText("Логин");
+        PasswordField password = new PasswordField();
+        password.setPromptText("Пароль");
+        TextField nickname = new TextField();
+        username.setPromptText("Ник");
+
+        grid.add(new Label("Логин:"), 0, 0);
+        grid.add(username, 1, 0);
+        grid.add(new Label("Пароль:"), 0, 1);
+        grid.add(password, 1, 1);
+        grid.add(new Label("Ник:"), 0, 2);
+        grid.add(nickname, 1, 2);
+
+        // Enable/Disable login button depending on whether a username was entered.
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+
+        // Do some validation (using the Java 8 lambda syntax).
+        username.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+        // Request focus on the username field by default.
+        Platform.runLater(() -> username.requestFocus());
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                Map<String, String> map = new HashMap<>();
+                map.put("login", username.getText());
+                map.put("pass", password.getText());
+                map.put("nickname", nickname.getText());
+                return map;
+            }
+            return null;
+        });
+
+        Optional<Map<String, String>> result = dialog.showAndWait();
+
+        result.ifPresent(map -> {
+//            System.out.println("Username=" + map.get("login") + ", Password=" + map.get("pass") + ", nickname: " + map.get("nickname"));
+            try {
+                network.write(new RegistrationMessage(map.get("login"), map.get("pass"), map.get("nickname")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     public void authorize(ActionEvent actionEvent) {
@@ -394,12 +529,40 @@ public class FilesController implements Initializable {
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
         result.ifPresent(usernamePassword -> {
-//            System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
+
             try {
                 network.write(new AuthMessage(usernamePassword.getKey(), usernamePassword.getValue()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+    }
+
+
+    public void shareFile(ActionEvent actionEvent) {
+
+        shareFile = serverView.getSelectionModel().getSelectedItem();
+        if (shareFile == null || shareFile.isEmpty()) {
+            Utils.error("Ошибка!", "Выберите на сервере файл для публикации!");
+            return;
+        }
+
+        try {
+            network.write(new UsersRequestMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void showShare(ActionEvent actionEvent) throws IOException {
+        showingShareFiles = true;
+        network.write(new ShowShareMessage(nickname));
+
+    }
+
+    public void showMyFiles(ActionEvent actionEvent) throws IOException {
+        showingShareFiles = false;
+        network.write(new ListFilesRequest());
     }
 }
